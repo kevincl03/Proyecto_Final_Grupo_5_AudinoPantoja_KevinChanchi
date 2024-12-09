@@ -1,0 +1,4 @@
+@env = dev
+
+GET http://localhost:3002/api/users/profiles
+Authorization: Bearer {{token}}

@@ -1,0 +1,12 @@
+###
+POST  http://localhost:3002/api/users/register
+Content-Type: application/json
+
+{
+    "firstName": "Kevin",
+    "middleName": "Alexander",
+    "lastNames": "Chanchi",
+    "phone": "3137356123",
+    "email":"kevin.chanchi@gmail.com",
+    "password":"123456"
+}

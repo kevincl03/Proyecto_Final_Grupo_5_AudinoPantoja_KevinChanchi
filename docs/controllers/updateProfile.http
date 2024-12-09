@@ -1,0 +1,9 @@
+
+PUT  http://localhost:3002/api/users/profile/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "firstName": "Andres",
+    "phone":"3208352147"
+}

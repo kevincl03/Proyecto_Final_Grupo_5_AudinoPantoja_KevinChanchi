@@ -1,0 +1,7 @@
+{
+   "rest-client.environmentVariables": {
+     "dev": {
+       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNzUyNjc5LCJleHAiOjE3MzM3NTYyNzl9.udph0Pu6iwHa-wcUax__BPHHXbryY1j5a5ALwjMBDSs"
+     }
+   }
+}

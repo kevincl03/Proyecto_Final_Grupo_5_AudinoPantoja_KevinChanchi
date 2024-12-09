@@ -1,0 +1,327 @@
+openapi: 3.0.0
+info:
+  title: API-RESTful Tienda Virtual
+  version: 1.0.0
+paths:
+  /api/users/register:
+    post:
+      summary: Registrar un nuevo usuario
+      tags:
+        - "Users"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                middleName:
+                  type: string
+                lastNames:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado
+        '400':
+          description: Error en la solicitud
+
+  /api/users/login:
+    post:
+      summary: Iniciar sesión de un usuario
+      tags:
+        - "Users"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "userpassword"
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token generado para el usuario
+        '400':
+          description: Error en la solicitud
+        '401':
+          description: Credenciales inválidas
+
+  /api/users/profile:
+    get:
+      summary: Obtener la información del usuario autenticado
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: [] 
+      responses:
+        '200':
+          description: Información del usuario obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID del usuario
+                  email:
+                    type: string
+                    description: Correo electrónico del usuario
+                  password:
+                    type: string
+                    description: contraseña del usuario
+                  fullName:
+                    type: string
+                    description: Nombre completo del usuario
+                  phone:
+                    type: string
+                    description: Numero de telefono del usuario
+        '401':
+          description: No autorizado, token inválido o expirado
+        '403':
+          description: Acceso prohibido, el usuario no tiene permisos
+        '404':
+          description: Usuario no encontrado
+
+  /api/users/profiles:
+    get:
+      summary: Obtener la información de todos los usuarios registrados
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: [] 
+      responses:
+        '200':
+          description: Información de los usuarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID del usuario
+                  email:
+                    type: string
+                    description: Correo electrónico del usuario
+                  password:
+                    type: string
+                    description: contraseña del usuario
+                  firstName:
+                    type: string
+                    description: Primer nombre del usuario
+                  middleName:
+                    type: string
+                    description: Segundo nombre del usuario
+                  lastNames:
+                    type: string
+                    description: Apellidos del usuario
+                  phone:
+                    type: string
+                    description: Numero de telefono del usuario
+        '401':
+          description: No autorizado, token inválido o expirado
+        '403':
+          description: Acceso prohibido, el usuario no tiene permisos
+        '404':
+          description: Informacion de los usuarios no encontrada
+
+  /api/users/profile/{userId}:
+    put:
+      summary: "Actualizar la información de un usuario específico"
+      description: "Permite actualizar la información de un usuario específico en el sistema. Es necesario proporcionar el userId como parámetro en la URL."
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: "ID único del usuario a actualizar"
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  description: "Nombre del usuario"
+                middleName:
+                  type: string
+                  description: "Segundo nombre del usuario"
+                lastNames:
+                  type: string
+                  description: "Apellidos del usuario"
+                phone:
+                  type: string
+                  description: "Número de teléfono del usuario"
+                email:
+                  type: string
+                  description: "Correo electrónico del usuario"
+                password:
+                  type: string
+                  description: "Contraseña del usuario"
+      responses:
+        '200':
+          description: "Información del usuario actualizada exitosamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User information updated successfully."
+        '400':
+          description: "Solicitud inválida, datos incorrectos o incompletos"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid request data."
+        '401':
+          description: "No autorizado, token inválido o expirado"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized. Invalid or expired token."
+        '403':
+          description: "Acceso prohibido, el usuario no tiene permisos"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Forbidden. User does not have the necessary permissions."
+        '404':
+          description: "Usuario no encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "User not found."
+        '500':
+          description: "Error interno del servidor"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "An unexpected error occurred."
+
+    delete:
+      summary: "Eliminar un usuario específico y su información"
+      description: "Elimina un usuario específico del sistema y toda su información asociada basándose en el userId proporcionado."
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: "ID único del usuario a eliminar"
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Usuario eliminado correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User and associated data successfully deleted."
+        '400':
+          description: "Solicitud inválida, formato de userId incorrecto"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid userId format."
+        '401':
+          description: "No autorizado, token inválido o expirado"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized. Invalid or expired token."
+        '403':
+          description: "Acceso prohibido, el usuario no tiene permisos"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Forbidden. User does not have the necessary permissions."
+        '404':
+          description: "Usuario no encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "User not found."
+        '500':
+          description: "Error interno del servidor"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "An unexpected error occurred."
+        
